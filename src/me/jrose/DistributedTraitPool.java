@@ -1,6 +1,7 @@
 package me.jrose;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 
 public class DistributedTraitPool {
@@ -24,7 +25,9 @@ public class DistributedTraitPool {
     private ArrayList<Integer> headTraitIdsDistributed = new ArrayList<>();
     private ArrayList<Integer> eyesTraitIdsDistributed = new ArrayList<>();
 
-    public String createBuildIds(int numberOfBuilds) {
+    private HashSet<String> usedBuildIds = new HashSet<>();
+
+    public void createBuildIds(int numberOfBuilds) {
         int numBuildFailsDueToDuplication = 0;
         while (usedBuildIds.size()<numberOfBuilds) {
             String buildId = "";
@@ -68,11 +71,11 @@ public class DistributedTraitPool {
                 numBuildFailsDueToDuplication++;
             }
         }
-        return "Creation of " + numberOfBuilds + " build IDs complete. Wasted cycles " +
-                "due to duplicate build IDs = " + numBuildFailsDueToDuplication;
+
+        System.out.println("Creation of " + numberOfBuilds + " build IDs complete. Wasted cycles " +
+                "due to duplicate build IDs = " + numBuildFailsDueToDuplication);
     }
 
-    private HashSet<String> usedBuildIds = new HashSet<>();
 
     public HashSet<String> getUsedBuildIds() {
         if (usedBuildIds.size() == 0)
@@ -123,38 +126,5 @@ public class DistributedTraitPool {
             }
         }
     }
-
-//    public void addBackgroundTrait(int intId) {
-//        backgroundTraitIdsDistributed.add(intId);
-//        totalBackgroundTraits++;
-//    }
-//    public void addSkinTrait(int intId) {
-//        skinTraitIdsDistributed.add(intId);
-//        totalSkinTraits++;
-//    }
-//    public void addBaseTrait(int intId) {
-//        baseTraitIdsDistributed.add(intId);
-//        totalBaseTraits++;
-//    }
-//    public void addBodyTrait(int intId) {
-//        bodyTraitIdsDistributed.add(intId);
-//        totalBodyTraits++;
-//    }
-//    public void addArmsTrait(int intId) {
-//        armsTraitIdsDistributed.add(intId);
-//        totalArmsTraits++;
-//    }
-//    public void addMouthTrait(int intId) {
-//        mouthTraitIdsDistributed.add(intId);
-//        totalMouthTraits++;
-//    }
-//    public void addHeadTrait(int intId) {
-//        headTraitIdsDistributed.add(intId);
-//        totalHeadTraits++;
-//    }
-//    public void addEyesTrait(int intId) {
-//        eyesTraitIdsDistributed.add(intId);
-//        totalEyesTraits++;
-//    }
 
 }
