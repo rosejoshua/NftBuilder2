@@ -79,14 +79,24 @@ public class TraitPool {
     }
 
     public void buildNftFrames(String buildId, String destinationDirectory, int numAnimationFrames, int width, int height) throws IOException {
+        //we break up the dash separated trait Ids of each completed unique build such as 1-4-12-15-45-46 etc.
         String[] traitIds = buildId.split("-");
+
+        //make a folder that matches the buildId for each unique complete build where we put the assembled frames
         File outputDirectory = new File(destinationDirectory + buildId);
         outputDirectory.mkdirs();
+
+
         for (int i = 0; i < numAnimationFrames; i++) {
+
+//            System.out.println("starting outside loop of buildNftFrames");
             BufferedImage outputImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             Graphics graphics = outputImage.getGraphics();
+
+            //iteration for each
             for (int j = 0; j < traitIds.length; j++) {
 
+//                System.out.println("starting inside loop of buildNftFrames");
                 BufferedImage sourceImage = ImageIO.read(new File(
                         //path here
                         getTraitById(Integer.parseInt(traitIds[j])).getTraitFolder().getAbsolutePath() +
@@ -97,13 +107,15 @@ public class TraitPool {
                         getTraitById(Integer.parseInt(traitIds[j])).getName() +
                                 ////ternary to add skin color to name here if skin color dependent
                                 (getTraitById(Integer.parseInt(traitIds[j])).isSkinColorDependent() ? getTraitById(Integer.parseInt(traitIds[1])).getName() : "") +
-                                //ternary to handle crazy file names for animation frames
+                                //ternary to handle crazy file names for animation frames received from Krita (image processing)
                                 (i<9 ? "000" : "00") + (i+1) + ".png"
                 ));
                 graphics.drawImage(sourceImage, 0, 0, null);
+//                System.out.println("ending inside loop of buildNftFrames");
             }
             graphics.dispose();
             ImageIO.write(outputImage, "PNG", new File(outputDirectory, i +".png"));
+//            System.out.println("ending outside loop of buildNftFrames");
         }
     }
 
@@ -140,6 +152,8 @@ public class TraitPool {
     }
 
     public Trait getTraitById(int id) {
+
+//        System.out.println("starting a call to getTraitById");
         Trait returnTrait = null;
         while (returnTrait==null) {
             for (Trait trait : backgroundTraits) {
@@ -175,6 +189,8 @@ public class TraitPool {
                     returnTrait = trait;
             }
         }
+
+//        System.out.println("ending a call to getTraitById");
         return returnTrait;
     }
 
