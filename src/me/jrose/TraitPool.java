@@ -78,6 +78,8 @@ public class TraitPool {
         }
     }
 
+
+
     public void buildNftFrames(String buildId, String destinationDirectory, int numAnimationFrames, int width, int height) throws IOException {
         //we break up the dash separated trait Ids of each completed unique build such as 1-4-12-15-45-46 etc.
         String[] traitIds = buildId.split("-");
@@ -193,36 +195,5 @@ public class TraitPool {
 //        System.out.println("ending a call to getTraitById");
         return returnTrait;
     }
-
-//    public void addTrait(Trait trait) {
-//        switch (trait.getTraitType().ordinal()){
-//            case 0:
-//                backgroundTraits.add(trait);
-//                break;
-//            case 1:
-//                skinTraits.add(trait);
-//                break;
-//            case 2:
-//                baseTraits.add(trait);
-//                break;
-//            case 3:
-//                bodyTraits.add(trait);
-//                break;
-//            case 4:
-//                armsTraits.add(trait);
-//                break;
-//            case 5:
-//                mouthTraits.add(trait);
-//                break;
-//            case 6:
-//                headTraits.add(trait);
-//                break;
-//            case 7:
-//                eyesTraits.add(trait);
-//                break;
-//            default:
-//                throw new IllegalArgumentException("Trait not a valid type");
-//        }
-//    }
 
 }

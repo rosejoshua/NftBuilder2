@@ -2,12 +2,14 @@ package me.jrose;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class App {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         String sourceDirectoryString = "D:\\resource\\nft\\";
         String destinationDirectoryString = "D:\\output\\";
-        int numToMake = 2200;
+        int numToMake = 2250;
         int numAnimationFrames=15;
         int width = 815;
         int height = 815;
@@ -33,11 +35,21 @@ public class App {
         String[] buildIds = new String[distributedTraitPool.getUsedBuildIds().size()];
         distributedTraitPool.getUsedBuildIds().toArray(buildIds);
 
+        int coreCount = Runtime.getRuntime().availableProcessors();
+        ExecutorService executorService = Executors.newFixedThreadPool(coreCount);
+
         for (int i = 0; i < buildIds.length; i++) {
-            traitPool.buildNftFrames(buildIds[i], destinationDirectoryString, numAnimationFrames, width, height);
+            //single threaded version:
+            //traitPool.buildNftFrames(buildIds[i], destinationDirectoryString, numAnimationFrames, width, height);
+
+            //multi-threaded version:
+            executorService.execute(new MultithreadedNftFrameBuilder(traitPool, buildIds[i],
+                    destinationDirectoryString, numAnimationFrames, width, height));
             if (i % 50 == 0)
                 System.out.println("Number of Builds Processed: " + i);
         }
+
+        executorService.shutdown();
 
     }
 }
