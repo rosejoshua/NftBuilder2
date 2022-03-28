@@ -10,15 +10,17 @@ public class MultithreadedNftFrameBuilder implements Runnable{
     private TraitPool traitPool;
     private String buildId;
     private String destinationDirectory;
+    private String destinationGifDirectory;
     private int numAnimationFrames;
     private int width;
     private int height;
 
     public MultithreadedNftFrameBuilder(TraitPool traitPool, String buildId, String destinationDirectory,
-                                        int numAnimationFrames, int width, int height) {
+                                        String destinationGifDirectory, int numAnimationFrames, int width, int height) {
         this.traitPool = traitPool;
         this.buildId = buildId;
         this.destinationDirectory = destinationDirectory;
+        this.destinationGifDirectory = destinationGifDirectory;
         this.numAnimationFrames = numAnimationFrames;
         this.width = width;
         this.height = height;
@@ -29,9 +31,15 @@ public class MultithreadedNftFrameBuilder implements Runnable{
         String[] traitIds = buildId.split("-");
 
         //make a folder that matches the buildId for each unique complete build where we put the assembled frames
-        File outputDirectory = new File(destinationDirectory + buildId);
-        outputDirectory.mkdirs();
+//        File outputDirectory = new File(destinationDirectory + buildId);
+//        outputDirectory.mkdirs();
 
+
+        AnimatedGifEncoder encoder = new AnimatedGifEncoder();
+        encoder.start(destinationGifDirectory + "\\" + buildId + ".gif");
+//        encoder.setFrameRate(150);
+        encoder.setFrameRate(9);
+        encoder.setRepeat(0);
 
         for (int i = 0; i < numAnimationFrames; i++) {
 
@@ -65,10 +73,13 @@ public class MultithreadedNftFrameBuilder implements Runnable{
             }
             graphics.dispose();
             try {
-                ImageIO.write(outputImage, "PNG", new File(outputDirectory, i +".png"));
-            } catch (IOException e) {
+//                ImageIO.write(outputImage, "PNG", new File(outputDirectory, i +".png"));
+                encoder.addFrame(outputImage);
+//            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        encoder.finish();
     }
 }

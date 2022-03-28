@@ -9,6 +9,7 @@ public class App {
     public static void main(String[] args) throws IOException, InterruptedException {
         String sourceDirectoryString = "D:\\resource\\nft\\";
         String destinationDirectoryString = "D:\\output\\";
+        String destinationGifDirectoryString = "D:\\output\\gifs";
         int numToMake = 2250;
         int numAnimationFrames=15;
         int width = 815;
@@ -23,6 +24,11 @@ public class App {
         File destinationDirectory = new File(destinationDirectoryString);
         if (!destinationDirectory.exists()){
             destinationDirectory.mkdir();
+        }
+
+        File destinationGifDirectory = new File(destinationGifDirectoryString);
+        if (!destinationGifDirectory.exists()){
+            destinationGifDirectory.mkdir();
         }
 
         TraitPool traitPool = new TraitPool();
@@ -44,7 +50,7 @@ public class App {
 
             //multi-threaded version:
             executorService.execute(new MultithreadedNftFrameBuilder(traitPool, buildIds[i],
-                    destinationDirectoryString, numAnimationFrames, width, height));
+                    destinationDirectoryString, destinationGifDirectoryString, numAnimationFrames, width, height));
             if (i % 50 == 0)
                 System.out.println("Number of Builds Processed: " + i);
         }
